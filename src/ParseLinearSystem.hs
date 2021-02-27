@@ -22,10 +22,13 @@ lexer = PT.makeTokenParser emptyDef
 integer = PT.integer lexer
 natural = PT.natural lexer
 
+-- TODO: instead of ';' use '\n' as the separator.
+-- Note even if usages below of spaces changed to something that only
+-- skips ' ', some other parser is skipping '\n'.
 parseLinearInequalityLines :: GenParser Char st [LS.LinearInequality]
-parseLinearInequalityLines = sepBy parseLinearInequality eol
+parseLinearInequalityLines = endBy1 parseLinearInequality eol
   where
-    eol = char '\n'
+    eol = char ';'
 
 parseLinearInequality :: GenParser Char st LS.LinearInequality
 parseLinearInequality =

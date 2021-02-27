@@ -77,7 +77,8 @@ unitTests = tg "Unit tests"
    parseRationalTG,
    parseDegreeOneMonomialTG,
    parseTermsTG,
-   parseLinearInequalityTG]
+   parseLinearInequalityTG,
+   parseLinearInequalityLinesTG]
   
 parseSenseTG = tg "parseSense tests"
  [parsesTC parseSense "<=" LesserOrEqual 
@@ -228,3 +229,22 @@ parseLinearInequalityTG = tg "parseLinearInequality"
     dom4neg = DegreeOneMonomial {coefficient = -(coefficient dom4),
                                  variableIndex = variableIndex dom4}
     dom4str = "23423432432"++ciSep ++"3"    
+
+
+parseLinearInequalityLinesTG = tg "parseLinearInequalityLines"
+  [descParsescTC "Separated and ended by by ; should parse as two LinearInequalities"
+   parseLinearInequalityLines twoInequalitiesInput twoInequalitiesExpected,
+   descFailParseTC "Separated and ended by by \\n should fail to parse."
+   parseLinearInequalityLines [if x == ';' then '\n' else x | x <- twoInequalitiesInput],
+   descFailParseTC "No inequalities should fail to parse."
+   parseLinearInequalityLines "asd"
+  ]
+  where
+    twoInequalitiesInput = "10/9 x_1<= 1/2 ;-7 x_2 = 5;"
+    twoInequalitiesExpected = [
+      LinearInequality { lhs = [makeDegreeOneMonomial 10 9 1],
+                         sense = LesserOrEqual,
+                         rhs = 1 % 2},
+      LinearInequality { lhs = [makeDegreeOneMonomial (-7) 1 2],
+                         sense = Equal,
+                         rhs = 5 % 1}]
