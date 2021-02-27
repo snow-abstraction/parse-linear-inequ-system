@@ -60,6 +60,7 @@ isParseError p s = case parse p "" s of
   Right _ -> False
   Left _  -> True
 
+-- TODO: should this main be here when running tests via cabal
 main = defaultMain tests
 
 tests = testGroup "Tests"
