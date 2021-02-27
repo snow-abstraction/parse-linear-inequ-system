@@ -3,6 +3,7 @@
 --    (See accompanying file LICENSE_1_0.txt or copy at
 --          http://www.boost.org/LICENSE_1_0.txt)
 -- TG = test group
+{-# LANGUAGE  FlexibleContexts #-}
 import Test.Tasty (defaultMain, testGroup)
 import Test.Tasty.QuickCheck (testProperty)
 import Test.Tasty.HUnit ((@?), (@=?), testCase)
